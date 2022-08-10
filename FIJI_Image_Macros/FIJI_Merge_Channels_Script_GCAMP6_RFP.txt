@@ -1,5 +1,5 @@
-run("Image Sequence...", "open=[E:/Zane/macrotrials/GCamp /GCY8Mix_5.5_Tc25_17to24_1__4_MMStack_t1.tif] number=4995
-run("Image Sequence...", "open=[E:/Zane/macrotrials/Red /GCY8Mix_5.5_Tc25_17to24_1__4_MMStack_t1.tif] number=4995
+run("Image Sequence...", "open=[E:FILEPATH] number=4995")
+run("Image Sequence...", "open=[E:FILEPATH] number=4995")
 //run("Threshold...");
 setThreshold(90, 125);
 selectwindow("GCamp");
