@@ -1,0 +1,112 @@
+/*
+ * Script to track sample motion and compensate with stage motion
+ */
+import org.micromanager.utils.ImageUtils;
+import ij.process.FHT;
+import ij.process.ImageProcessor;
+import ij.process.ShortProcessor;
+import ij.ImagePlus;
+import java.awt.geom.Point2D;
+
+pixelSize = 1.3;  // for 10x objective
+
+ImageProcessor getSubImage(ImageProcessor proc, int x, int y, int w, int h) {
+    proc2 = new ShortProcessor(w,h);
+    proc2.insert(proc,-x,-y);  // why "-x", "-y"?
+    return proc2;
+}
+
+// Measures the displacement between two images by cross-correlating, and then finding the maximum value.
+// Accurate to one pixel only.
+
+Point measureDisplacement(ImageProcessor proc1, int size, Point prevPeak)
+{
+    //img= new ImagePlus("", proc1);
+    //img.show();
+
+    proc1s = getSubImage(proc1, prevPeak.x-size, prevPeak.y-size, size*2+1, size*2+1);
+    p1 = ImageUtils.findMaxPixel(proc1s);
+    // print(p1);
+    p1.x += prevPeak.x-size;
+    p1.y += prevPeak.y-size;
+    print(p1);
+    d2 = new Point(p1.x - prevPeak.x, p1.y - prevPeak.y);
+    return d2;
+}
+
+
+// file locations
+acqName = gui.getUniqueAcquisitionName("GCY8_5.5_testV3_");
+rootDirName = "G:/";
+
+// Number of timepoints
+nrFrames = 1500;
+nrChannels = nrSlices = nrPositions = 1;
+exposureMs = mmc.getExposure();
+int msTrackPeriod = 1000;  // check for sample displacement every msTrackPeriod milliseconds
+int groupSize = msTrackPeriod/exposureMs; // converted to number of exposures
+
+// The size of region around peak1 in which peak2 will be searched
+roiHalfWidth = 300; // user should check this to see if it makes sense; related to msTrackPeriod
+
+// Stop Live mode (such as a Live window)
+if (gui.isLiveModeOn())
+    gui.enableLiveMode(false);
+//mmc.stopSequenceAcquisition();
+
+gui.openAcquisition(acqName, rootDirName,
+                    nrFrames, nrChannels, nrSlices, nrPositions,
+                    /* show */ true, /* save */ true);
+
+width = (int) mmc.getImageWidth();
+height = (int) mmc.getImageHeight();
+bytesPerPixel = (int) mmc.getBytesPerPixel();
+bitDepth = (int) mmc.getImageBitDepth();
+
+gui.initializeAcquisition(acqName, width, height, bytesPerPixel, bitDepth);
+
+
+mmc.startSequenceAcquisition(nrFrames, 0, true);
+f=0;
+while (mmc.getRemainingImageCount() > 0 || mmc.isSequenceRunning(mmc.getCameraDevice())) {
+    if (mmc.getRemainingImageCount() > 0) {
+        img = mmc.popNextTaggedImage();
+        Point2D.Double point = gui.getXYStagePosition();
+        img.tags.put("MeasuredStageX", point.getX());
+        img.tags.put("MeasuredStageY", point.getY());
+        img.tags.put("MeasuredStageZ", mmc.getPosition());
+
+        gui.addImageToAcquisition(acqName, f, 0, 0, 0, img);
+        if (f==0) {
+            gui.setContrastBasedOnFrame(acqName, 0, 0);
+            proc_prev = ImageUtils.makeProcessor(img);
+            right_half = getSubImage(proc_prev, width/2, 0, width/2, height);
+            
+            proc_prev.set(963, 864, 100);
+            originalPeak =  ImageUtils.findMaxPixel(right_half);
+            print(originalPeak);
+            if (! (originalPeak.x - roiHalfWidth > 0 && originalPeak.y - roiHalfWidth > 0) ) {
+              //  gui.showMessage("originalPeak is too close to image's edges");
+            //    toQuit = true;
+            //    break; // from the while loop
+            }
+            //          stats = proc_prev.getStatistics();
+            //          background = stats.mean;
+            //          proc_prev.subtract(background);
+        }
+        else if (f%groupSize ==0) {
+            proc_curr = ImageUtils.makeProcessor(img);
+			proc_curr.set(963, 864, 100);
+            //          proc_curr.subtract(background);
+            right_half = getSubImage(proc_curr, width/2, 0, width/2, height);
+            displ = measureDisplacement(right_half, roiHalfWidth, originalPeak);
+            print(displ);
+            gui.setRelativeXYStagePosition(displ.x * pixelSize, displ.y * pixelSize);
+        }
+        f ++;
+    }
+    else {
+        mmc.sleep(Math.min(0.5 * exposureMs, 20));
+    }
+}
+mmc.stopSequenceAcquisition();

@@ -1,0 +1,99 @@
+// Change the following to fit the data
+// It should work as long as the x offset is < 25 and y offset is <49.
+xoffset = 3;
+yoffset = 3;
+
+
+run("TIFF Virtual Stack...");
+dirname = getInfo("image.directory");
+filename=getInfo("image.filename");
+//print(dirname+filename)
+
+li = lastIndexOf(filename, "_Pos");
+//commonPattern is a string shared among all the ome.tif files
+// between the first character and the last "_Pos" appearance:
+commonPattern = substring(filename, 0, li);
+
+outputDirR = dirname+File.separator+"Red"+File.separator;
+File.makeDirectory(outputDirR);
+outputDirG = dirname+File.separator+"GCamp"+File.separator;
+File.makeDirectory(outputDirG);
+
+listFiles = getFileList(dirname);
+
+// Figure out cropping box's geometry
+getDimensions(width, height, channels, slices, frames);
+if (xoffset > 0) {
+	xstartG = xoffset;
+	xstartR = width/2;
+	cropWidth = width/2 - xoffset;
+}
+else {
+	xstartG = 0;
+	xstartR = width/2 - xoffset;
+	cropWidth = width/2 + xoffset;
+}
+
+if (yoffset > 0) {
+	ystartG = yoffset;
+	ystartR = 0;
+	cropHeight = height - yoffset;
+}
+else {
+	ystartG = 0;
+	ystartR = -yoffset;
+	cropHeight = height + yoffset;
+}
+
+// First, rename all files whose name contains single-digit series index; change
+// the single-digit indices into "0x" format so that files are listed in alphanumeric order
+for (i = 0; i <listFiles.length; i++) {
+	if (matches(listFiles[i], commonPattern+"_Pos0_[0-9]\.ome\.tif")) {
+		newFilename = replace(listFiles[i], "_Pos0_", "_Pos0_0");
+		File.rename(dirname+listFiles[i], dirname+newFilename);
+	}
+}
+
+// Refresh listFiles to reflect correct alphanumeric order:
+listFiles = getFileList(dirname);
+
+timeIdx = 1;
+for (i = 0; i <listFiles.length; i++) {
+	if (matches(listFiles[i], commonPattern+".*\.ome\.tif")) {
+	  if (!isOpen(listFiles[i]))
+    	run("TIFF Virtual Stack...", "open="+dirname+listFiles[i]);
+
+      getDimensions(width, height, channels, slices, frames);
+      // Mainly to update slices, which may be less in the last stack than the rest
+
+      setBatchMode(true);
+	  for (z=0; z<slices; z++) {
+        selectImage(listFiles[i]);
+	  	setSlice(z+1);
+
+	  	run("Duplicate...", " ");
+	  	if (cropWidth >= 1000 && cropHeight >=2000)
+            makeRectangle(xstartR, ystartR, 1000, 2000);
+        else {
+            makeRectangle(xstartR, ystartR, cropWidth, cropHeight);
+        }
+        run("Crop");
+        save(outputDirR+commonPattern+"_t"+timeIdx+".tif");
+        close();
+
+        selectImage(listFiles[i]);
+	  	run("Duplicate...", " ");
+	  	if (cropWidth >= 1000 && cropHeight >=2000)
+            makeRectangle(xstartG, ystartG, 1000, 2000);
+        else {
+            makeRectangle(xstartG, ystartG, cropWidth, cropHeight);
+        }
+        run("Crop");
+        save(outputDirG+commonPattern+"_t"+timeIdx+".tif");
+        close();
+        timeIdx += 1;
+	  }
+      close(); // close the virtual stack window
+      setBatchMode(false);
+	}
+}
