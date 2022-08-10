@@ -13,7 +13,7 @@
 
 # Overview
 
-Through the development of a novel, live-imaging system that simultaneously tracks calcium levels and worm behavior, we were able to see how, in C. elegans, sensory neuronal activity correlates with sensory information processing and the navigation strategy that produces goal-directed behavior. Thus, this approach not only offers insight into these questions, but promises to shed further light on the more general processes underlying the acquisition of behavioral preferences and the role played by AFD therein. For this project, analysis was accomplished with the described code and techniques. The code is available for installation on all major platforms (e.g. Windows, Linux, OS X) and GitHub. 
+Through the development of a novel, live-imaging system that simultaneously tracks calcium levels and worm behavior, we were able to see how, in C. elegans, sensory neuronal activity correlates with sensory information processing and the navigation strategy that produces goal-directed behavior. Thus, this approach not only offers insight into these questions, but promises to shed further light on the more general processes underlying the acquisition of behavioral preferences and the role played by AFD therein. For this project, analysis was accomplished with the described code and techniques with the purpose of tracking different facets of worm locomotion. The code is available for installation on all major platforms (e.g. Windows, Linux, OS X) and GitHub. 
 
 # System Requirements and Installation Guide
 
@@ -37,15 +37,13 @@ To install ImageJ/Fiji - https://imagej.nih.gov/ij/
 
 To reliably record neuronal calcium activity as the worms freely navigated the thermal gradient, we developed a neuron tracking system coded in Beanshell script (CabezasBou-et-al.-2022/Neuro_Tracker_Codes/).  
 
-Calcium imaging data in freely moving worms performing thermotaxis was recorded and analyzed in CytoShow. Data was aligned manually with the channels offset to correct for pixel overlay. 
-
-
 # Image Processing
 
-
+Calcium imaging data in freely moving worms performing thermotaxis was recorded and analyzed in CytoShow. Data was aligned manually with the channels offset to correct for pixel overlay. Channels were split using an ImageJ script (FIJI_Image_Macros/FIJI_Split_Channels_GCaMP_RFPijm) with the purpose of individually detecting RFP and GCAMP6 fluorescent neurons.
 
 # Calcium Activity Deep Learning Analysis
 
+A fully convolution network (FCN) was used to predict a binary AFD skeleton mask for every individual green and red fluorescent channel image , which was then used to precisely quantify the location and pixel intensity of the GCaMP and RFP in all parts of the neuron. Since the model was trained to detect AFD’s soma as separate from the dendrite structure, our analysis was able to quantify neuronal activity with subcellular resolution.
 
 # Behavior Deep Learning Analysis
 
@@ -63,4 +61,4 @@ Nath T, Mathis A, Chen AC, Patel A, Bethge M, Mathis MW. Using DeepLabCut for 3D
 
 # License
 
-https://github.com/colonramoslab/Hawk-et-al.-HySyn-2021/blob/beb04a038bfa8ba9a3e0cdb68b20a6ac855df303/LICENSE
+https://github.com/colonramoslab/CabezasBou-et-al.-2022/blob/main/LICENSE
