@@ -13,7 +13,7 @@
 
 # Overview
 
-2 SENTENCE EXPLANATION OF PROJECT. For this project, analysis was accomplished with the described code and techniques. The code is available for installation on all major platforms (e.g. Windows, Linux, OS X) and GitHub. 
+Through the development of a novel, live-imaging system that simultaneously tracks calcium levels and worm behavior, we were able to see how, in C. elegans, sensory neuronal activity correlates with sensory information processing and the navigation strategy that produces goal-directed behavior. Thus, this approach not only offers insight into these questions, but promises to shed further light on the more general processes underlying the acquisition of behavioral preferences and the role played by AFD therein. For this project, analysis was accomplished with the described code and techniques. The code is available for installation on all major platforms (e.g. Windows, Linux, OS X) and GitHub. 
 
 # System Requirements and Installation Guide
 
@@ -29,7 +29,13 @@ To install DeepLabCut (version 2.2b8 used) - https://github.com/DeepLabCut/DeepL
 
 To install CytoSHOW - http://www.cytoshow.org/
 
+To install BeanShell - https://beanshell.github.io/
+
+To install ImageJ/Fiji - https://imagej.nih.gov/ij/
+
 # Neuron Tracking and Data Visualization
+
+To reliably record neuronal calcium activity as the worms freely navigated the thermal gradient, we developed a neuron tracking system coded in Beanshell script (CabezasBou-et-al.-2022/Neuro_Tracker_Codes/).  
 
 Calcium imaging data in freely moving worms performing thermotaxis was recorded and analyzed in CytoShow. Data was aligned manually with the channels offset to correct for pixel overlay. 
 
