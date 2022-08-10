@@ -4,8 +4,10 @@
 
 - [Overview](#overview)
 - [System Requirements and Installation Guide](#system-requirements-and-installation-guide)
-- [Dispersion Assay Tracking Analysis & Dispersion Assay Tracking/Speed Analysis](#Dispersion-Assay-Tracking-Analysis-&-Dispersion-Assay-Tracking/Speed-Analysis)
-- [Head Thrashing Analysis](#head-thrashing-analysis)
+- [Neuron Tracking and Data Visualization](#Dispersion-Assay-Tracking-Analysis-&-Dispersion-Assay-Tracking/Speed-Analysis)
+- [Image Processing](#head-thrashing-analysis)
+- [Calcium Activity Deep Learning Analysis] (#head-thrashing-analysis)
+- [Behavior Deep Learning Analysis] (#head-thrashing-analysis)
 - [Citations](#Citations)
 - [License](#license)
 
