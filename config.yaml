@@ -1,0 +1,92 @@
+# Project definitions (do not edit)
+Task: ernestoTrainData
+scorer: Zane Kashlan
+date: Oct4
+
+# Project path (change when moving around)
+project_path: C:\DeepLab\ernestodata\ernestoTrainData-Zane Kashlan-2020-10-29
+
+# Annotation data set configuration (and individual video cropping parameters)
+video_sets:
+  C:\DeepLab\ernestodata\finishedproduct\021920_2_1.avi:
+    crop: 0, 1000, 0, 2000
+  C:\DeepLab\ernestodata\finishedproduct\021920_2_2.avi:
+    crop: 0, 1000, 0, 2000
+  C:\DeepLab\ernestodata\finishedproduct\021920_3_1.avi:
+    crop: 0, 1000, 0, 2000
+  C:\DeepLab\ernestodata\finishedproduct\021920_3_2.avi:
+    crop: 0, 1000, 0, 2000
+  C:\DeepLab\ernestodata\finishedproduct\021920_4_1.avi:
+    crop: 0, 1000, 0, 2000
+  C:\DeepLab\ernestodata\finishedproduct\021920_4_2.avi:
+    crop: 0, 1000, 0, 2000
+  C:\DeepLab\ernestodata\finishedproduct\022120_2_.avi:
+    crop: 0, 1000, 0, 2000
+  C:\DeepLab\ernestodata\finishedproduct\022120_3_2.avi:
+    crop: 0, 1000, 0, 2000
+  C:\DeepLab\ernestodata\finishedproduct\022120_3_3.avi:
+    crop: 0, 1000, 0, 2000
+  C:\DeepLab\ernestodata\finishedproduct\022220_1_.avi:
+    crop: 0, 1000, 0, 2000
+  C:\DeepLab\ernestodata\finishedproduct\022220_1_1.avi:
+    crop: 0, 1000, 0, 2000
+  C:\DeepLab\ernestodata\finishedproduct\022220_2_.avi:
+    crop: 0, 1000, 0, 2000
+  C:\DeepLab\ernestodata\finishedproduct\022220_2_1.avi:
+    crop: 0, 1000, 0, 2000
+  C:\DeepLab\ernestodata\finishedproduct\022220_3_.avi:
+    crop: 0, 1000, 0, 2000
+  C:\DeepLab\ernestodata\finishedproduct\022220_3_1.avi:
+    crop: 0, 1000, 0, 2000
+  C:\DeepLab\ernestodata\finishedproduct\030420_3_5.avi:
+    crop: 0, 1000, 0, 2000
+  C:\DeepLab\ernestodata\finishedproduct\030520_1_6.avi:
+    crop: 0, 1000, 0, 2000
+  C:\DeepLab\ernestodata\finishedproduct\030520_2_5.avi:
+    crop: 0, 1000, 0, 2000
+  C:\DeepLab\ernestodata\finishedproduct\030420_1_2.avi:
+    crop: 0, 1000, 0, 2000
+bodyparts:
+- head
+- AFD Soma
+- neck
+- bodypart4
+- bodypart5
+- vulva
+- bodypart6
+- tail
+start: 0
+stop: 1
+numframes2pick: 15
+
+# Plotting configuration
+skeleton: [[head, AFD soma, neck, bodypart4, bodypart5, vulva, bodypart6, tail]]
+skeleton_color: white
+pcutoff: 0.9
+dotsize: 6
+alphavalue: 0.7
+colormap: jet
+
+# Training,Evaluation and Analysis configuration
+TrainingFraction:
+- 0.95
+iteration: 0
+resnet:
+snapshotindex: -1
+batch_size: 8
+
+# Cropping Parameters (for analysis and outlier frame detection)
+cropping: false
+#if cropping is true for analysis, then set the values here:
+x1: 0
+x2: 640
+y1: 277
+y2: 624
+
+# Refinement configuration (parameters from annotation dataset configuration also relevant in this stage)
+corner2move2:
+- 50
+- 50
+move2corner: true
+default_net_type: resnet_50
+default_augmenter: default
