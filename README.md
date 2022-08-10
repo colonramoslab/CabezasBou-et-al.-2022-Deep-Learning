@@ -49,7 +49,7 @@ A fully convolution network (FCN) was used to predict a binary AFD skeleton mask
 
 To generate a clear, robust video of the worm for tracking, a script (FIJI_Image_Macros/FIJI_Merge_Channels_Script_GCAMP6_RFP.txt) was used to overlay dual channel recordings of worms expressing GCAMP6 and RFP in Fiji. 
 
-Next, a convoluted neural network (CNN) was trained using DeepLabCut (Mathis et al., 2018; Nath et al., 2019) and used as a marker-less pose estimator to track _C. elegans_ behavior. Implementation of this approach was performed as previously described in Hawk et al., 2021 with key modifications as described in the paper. The associated config folder can be found here (config.yaml).
+Next, a convoluted neural network (CNN) was trained using DeepLabCut (Mathis et al., 2018; Nath et al., 2019) and used as a marker-less pose estimator to track _C. elegans_ behavior. Implementation of this approach was performed as previously described in Hawk et al., 2021 with key modifications as described in the paper. Data from DLC was analyzed using a Jupyter script that can be found here (Freely_Moving_Analysis_Code/Freely Moving Analysis Example Code/Full_Cal_Model-Copy1(3_4_20_17to24_1_2_).ipynb). The associated config folder can be found here (config.yaml).
 
 # Citations
 
